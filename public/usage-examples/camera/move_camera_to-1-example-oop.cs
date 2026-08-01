@@ -1,7 +1,6 @@
-using System;
 using SplashKitSDK;
 
-namespace CameraFollowPlayerExample
+namespace MoveCameraToExample
 {
     public class Program
     {
@@ -9,14 +8,14 @@ namespace CameraFollowPlayerExample
         {
             const int screenWidth = 800;
             const int screenHeight = 600;
-            const int worldWidth = 2000;
-            const int worldHeight = 1400;
+            const int worldWidth = 1600;
+            const int worldHeight = 1000;
 
             const double playerSize = 40;
             const double movementSpeed = 5;
 
             SplashKit.OpenWindow(
-                "Camera Follow Player",
+                "Move Camera To Example",
                 screenWidth,
                 screenHeight
             );
@@ -32,60 +31,95 @@ namespace CameraFollowPlayerExample
                     SplashKit.KeyDown(KeyCode.LeftKey) ||
                     SplashKit.KeyDown(KeyCode.AKey)
                 )
+                {
                     playerX -= movementSpeed;
+                }
 
                 if (
                     SplashKit.KeyDown(KeyCode.RightKey) ||
                     SplashKit.KeyDown(KeyCode.DKey)
                 )
+                {
                     playerX += movementSpeed;
+                }
 
                 if (
                     SplashKit.KeyDown(KeyCode.UpKey) ||
                     SplashKit.KeyDown(KeyCode.WKey)
                 )
+                {
                     playerY -= movementSpeed;
+                }
 
                 if (
                     SplashKit.KeyDown(KeyCode.DownKey) ||
                     SplashKit.KeyDown(KeyCode.SKey)
                 )
+                {
                     playerY += movementSpeed;
+                }
 
-                playerX = Math.Max(
-                    0,
-                    Math.Min(playerX, worldWidth - playerSize)
-                );
+                // Keep the player within the world.
+                if (playerX < 0)
+                {
+                    playerX = 0;
+                }
 
-                playerY = Math.Max(
-                    0,
-                    Math.Min(playerY, worldHeight - playerSize)
-                );
+                if (playerX > worldWidth - playerSize)
+                {
+                    playerX = worldWidth - playerSize;
+                }
 
+                if (playerY < 0)
+                {
+                    playerY = 0;
+                }
+
+                if (playerY > worldHeight - playerSize)
+                {
+                    playerY = worldHeight - playerSize;
+                }
+
+                // Centre the camera on the player.
                 double cameraX =
                     playerX + playerSize / 2 - screenWidth / 2.0;
 
                 double cameraY =
                     playerY + playerSize / 2 - screenHeight / 2.0;
 
-                cameraX = Math.Max(
-                    0,
-                    Math.Min(cameraX, worldWidth - screenWidth)
-                );
+                // Keep the camera within the world.
+                if (cameraX < 0)
+                {
+                    cameraX = 0;
+                }
 
-                cameraY = Math.Max(
-                    0,
-                    Math.Min(cameraY, worldHeight - screenHeight)
-                );
+                if (cameraX > worldWidth - screenWidth)
+                {
+                    cameraX = worldWidth - screenWidth;
+                }
 
+                if (cameraY < 0)
+                {
+                    cameraY = 0;
+                }
+
+                if (cameraY > worldHeight - screenHeight)
+                {
+                    cameraY = worldHeight - screenHeight;
+                }
+
+                // Move the camera to the calculated world position.
                 SplashKit.MoveCameraTo(cameraX, cameraY);
 
-                SplashKit.ClearScreen(Color.White);
+                SplashKit.ClearScreen(
+                    SplashKit.ColorWhite()
+                );
 
+                // Draw a simple grid to show camera movement.
                 for (int x = 0; x <= worldWidth; x += 200)
                 {
                     SplashKit.DrawLine(
-                        Color.LightGray,
+                        SplashKit.ColorLightGray(),
                         x,
                         0,
                         x,
@@ -96,7 +130,7 @@ namespace CameraFollowPlayerExample
                 for (int y = 0; y <= worldHeight; y += 200)
                 {
                     SplashKit.DrawLine(
-                        Color.LightGray,
+                        SplashKit.ColorLightGray(),
                         0,
                         y,
                         worldWidth,
@@ -104,8 +138,33 @@ namespace CameraFollowPlayerExample
                     );
                 }
 
+                // Draw simple landmarks within the world.
+                SplashKit.FillRectangle(
+                    SplashKit.ColorGreen(),
+                    100,
+                    100,
+                    180,
+                    120
+                );
+
+                SplashKit.FillCircle(
+                    SplashKit.ColorRed(),
+                    800,
+                    450,
+                    70
+                );
+
+                SplashKit.FillRectangle(
+                    SplashKit.ColorOrange(),
+                    1300,
+                    750,
+                    180,
+                    120
+                );
+
+                // Draw the world boundary and player.
                 SplashKit.DrawRectangle(
-                    Color.Black,
+                    SplashKit.ColorBlack(),
                     0,
                     0,
                     worldWidth,
@@ -113,197 +172,11 @@ namespace CameraFollowPlayerExample
                 );
 
                 SplashKit.FillRectangle(
-                    Color.SkyBlue,
-                    700,
-                    180,
-                    430,
-                    250
-                );
-
-                SplashKit.DrawText(
-                    "Crystal Lake",
-                    Color.DarkBlue,
-                    835,
-                    290
-                );
-
-                SplashKit.FillRectangle(
-                    Color.Orange,
-                    180,
-                    160,
-                    180,
-                    130
-                );
-
-                SplashKit.FillTriangle(
-                    Color.Red,
-                    160,
-                    160,
-                    380,
-                    160,
-                    270,
-                    80
-                );
-
-                SplashKit.FillRectangle(
-                    Color.Brown,
-                    245,
-                    220,
-                    50,
-                    70
-                );
-
-                SplashKit.DrawText(
-                    "Village House",
-                    Color.Black,
-                    210,
-                    305
-                );
-
-                SplashKit.FillRectangle(
-                    Color.Yellow,
-                    1510,
-                    900,
-                    190,
-                    140
-                );
-
-                SplashKit.FillTriangle(
-                    Color.DarkRed,
-                    1490,
-                    900,
-                    1720,
-                    900,
-                    1605,
-                    810
-                );
-
-                SplashKit.FillRectangle(
-                    Color.Brown,
-                    1580,
-                    970,
-                    50,
-                    70
-                );
-
-                SplashKit.DrawText(
-                    "Forest Cabin",
-                    Color.Black,
-                    1545,
-                    1055
-                );
-
-                for (int x = 450; x <= 1750; x += 260)
-                {
-                    SplashKit.FillRectangle(
-                        Color.Brown,
-                        x + 20,
-                        650,
-                        30,
-                        80
-                    );
-
-                    SplashKit.FillCircle(
-                        Color.Green,
-                        x + 35,
-                        630,
-                        55
-                    );
-                }
-
-                SplashKit.FillCircle(
-                    Color.Gray,
-                    1180,
-                    250,
-                    35
-                );
-
-                SplashKit.FillCircle(
-                    Color.DarkGray,
-                    1260,
-                    310,
-                    45
-                );
-
-                SplashKit.FillCircle(
-                    Color.Gray,
-                    1350,
-                    235,
-                    30
-                );
-
-                SplashKit.FillCircle(
-                    Color.Gold,
-                    1810,
-                    1220,
-                    45
-                );
-
-                SplashKit.DrawCircle(
-                    Color.Black,
-                    1810,
-                    1220,
-                    45
-                );
-
-                SplashKit.DrawText(
-                    "GOAL",
-                    Color.Black,
-                    1788,
-                    1212
-                );
-
-                SplashKit.FillRectangle(
-                    Color.Blue,
+                    SplashKit.ColorBlue(),
                     playerX,
                     playerY,
                     playerSize,
                     playerSize
-                );
-
-                SplashKit.DrawRectangle(
-                    Color.Black,
-                    playerX,
-                    playerY,
-                    playerSize,
-                    playerSize
-                );
-
-                SplashKit.DrawText(
-                    "PLAYER",
-                    Color.Black,
-                    playerX - 7,
-                    playerY - 22
-                );
-
-                SplashKit.FillRectangle(
-                    Color.White,
-                    cameraX + 15,
-                    cameraY + 15,
-                    350,
-                    72
-                );
-
-                SplashKit.DrawRectangle(
-                    Color.Black,
-                    cameraX + 15,
-                    cameraY + 15,
-                    350,
-                    72
-                );
-
-                SplashKit.DrawText(
-                    "Use WASD or Arrow Keys to move",
-                    Color.Black,
-                    cameraX + 28,
-                    cameraY + 29
-                );
-
-                SplashKit.DrawText(
-                    "The camera follows the player",
-                    Color.Black,
-                    cameraX + 28,
-                    cameraY + 55
                 );
 
                 SplashKit.RefreshScreen(60);
