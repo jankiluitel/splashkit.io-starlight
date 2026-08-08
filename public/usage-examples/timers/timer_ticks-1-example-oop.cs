@@ -12,7 +12,7 @@ namespace TimerTicksExample
                 300
             );
 
-            Timer myTimer = SplashKit.CreateTimer("example timer");
+            SplashKitSDK.Timer myTimer = SplashKit.CreateTimer("example timer");
             SplashKit.StartTimer(myTimer);
 
             while (!SplashKit.QuitRequested())

@@ -3,7 +3,7 @@ using static SplashKitSDK.SplashKit;
 
 OpenWindow("Timer Ticks Example", 600, 300);
 
-Timer myTimer = CreateTimer("example timer");
+SplashKitSDK.Timer myTimer = CreateTimer("example timer");
 StartTimer(myTimer);
 
 while (!QuitRequested())
